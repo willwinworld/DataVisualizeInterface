@@ -1,0 +1,50 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}SpiderStorage{% endblock %}
+
+{% block head %}
+{{ super() }}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+<script src="{{ url_for('static', filename='jquery.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='sidebar_menu.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default no-margin">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header fixed-brand">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle">
+          <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+        </button>
+        <a class="navbar-brand"><i class="fa fa-rocket fa-4"></i>SpiderStorage</a>
+    </div><!-- navbar-header-->
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button></li>
+                </ul>
+    </div><!-- bs-example-navbar-collapse-1 -->
+</nav>
+<div id="wrapper">
+    <ul class="nav nav-pills nav-stacked col-md-3" id="menu">
+        <li role="presentation">
+            <a href="{{ url_for('province') }}">山东</a>
+        </li>
+        <li>
+            <a class="city">城市</a>
+            <ul class="list" style="list-style-type:none;">
+                {% for dir in dirs %}
+                    <li>
+                        <a href="{{ url_for('city', cityname=dir) }}">{{ dir }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+{% block page_content %}{% endblock %}
+{% endblock %}
