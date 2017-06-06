@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="page-header col-md-9">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>运行成功: {{ string }}</h1>
+            <h2 id="log">日志</h2>
+            <textarea class="form-control" rows="20" id="textarea"></textarea>
+            <button class="btn btn-primary btn-lg" id="submit">显示日志</button>
+        </div>
+    </div>
+</div>
+
+<script>
+       var send_ajax = function(){
+           $.ajax({
+            url: "{{ url_for('stream_province') }}",
+            type: "POST",
+            data: '',
+            ansyc : false,
+            success: function(data){
+                console.log(data);
+                $("#textarea").text(data);
+            }
+        });
+       };
+
+    $("#submit").click(function(){
+        setInterval(function(){
+            send_ajax();
+        }, 6000);
+    });
+</script>
+{% endblock %}
