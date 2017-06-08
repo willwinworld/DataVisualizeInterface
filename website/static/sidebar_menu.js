@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log($(".city"));
+    // console.log($(".city"));
    $(".city").click(function(){
        $(".list").toggle();
    });

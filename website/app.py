@@ -3,7 +3,7 @@
 import os
 import json
 import subprocess
-from flask import Flask, render_template, request, jsonify, session, Response
+from flask import Flask, render_template, request, jsonify, session, Response, redirect
 from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from wtforms import StringField, SubmitField, HiddenField
@@ -70,21 +70,32 @@ def city(cityname):
     return render_template('city.html', cityname=cityname, form=form, dirs=file_names)
 
 
+def data_from_database():  # 查询数据库，返回列表
+    items = []
+    rq = RawQuery(Crime,
+                  'select count(*) as count , date(created_time) as created_time from crime group by date(created_time)')
+    rq_response = rq.execute()
+    count = 0
+    for obj in rq_response:
+        items.append({'index': count, 'date': obj.created_time.strftime("%Y-%m-%d"), 'number': obj.count})
+        count += 1
+    return items
+
+
+@app.route('/stream_chart', methods=['POST'])
+def stream_chart():
+    data = jsonify(data_from_database())
+    """传json data到前端页面，用于ajax"""
+    return data
+
+
 @app.route('/chart', methods=['GET', 'POST'])
 def chart():
-    res = []
+    items = data_from_database()
     program_path = '../sd'
     file_names = [x.replace('.py', '') for x in os.listdir(program_path) if
                   x != 'dialogue' and x != 'log' and x != 'sd_model.py' and len(x) < 10]
-    rq = RawQuery(Crime,
-                  'select count(*) as count , date(created_time) as created_time from crime group by date(created_time)')
-    rq.execute()
-    count = 0
-    for obj in rq.execute():
-        res.append({'index': count, 'date': obj.created_time.strftime("%Y-%m-%d"), 'number': obj.count})
-        count += 1
-    """传json data到前端页面"""
-    return render_template('chart.html', items=res, dirs=file_names)
+    return render_template('chart.html', items=items, dirs=file_names)
 
 
 class PostDataForm(Form):

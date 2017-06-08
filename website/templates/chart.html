@@ -1,13 +1,62 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+
 {% block page_content %}
     <style>
-        #table {
+        #chart {
             width: 50%;
             margin: auto;
         }
+        #table {
+            width: 50%;
+            margin: auto;
+            float: right;
+        }
     </style>
+    <div id="chart" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        console.log('ccc');
+        var myChart = echarts.init(document.getElementById('chart'));
+        console.log('ddd');
+        var option = {
+          title: {
+              text: '爬虫数据展示'
+          },
+          tooltip: {},
+            legend:{
+              data:['日期对应数据数量']
+            },
+            xAxis: {
+                data:[]
+            },
+            yAxis:{},
+            series:[{
+              name: '日期对应数据数量',
+                type: 'line',
+                data: []
+            }]
+        };
+        console.log('eee');
+        $.ajax({
+            url: "{{ url_for('stream_chart') }}",
+            type: "POST",
+            data: "",
+            dataType: "json",
+            ansyc : false,
+            success: function (result) {
+                console.log('aaa');
+                console.log(result);
+                console.log('bbb');
+                    for (i=0; i < result.length; i++){
+                        option.xAxis.data.push(result[i].date);
+                        option.series[0].data.push(result[i].number);
+                    }
+                 myChart.setOption(option);
+            }
+        });
+        myChart.setOption(option);
+    </script>
     <table class="table table-hover" id="table">
         <thead>
             <tr>
