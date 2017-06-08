@@ -1,6 +1,10 @@
 $(document).ready(function () {
-    // console.log($(".city"));
+    $(".list1").hide();
+    $(".list2").hide();
    $(".city").click(function(){
-       $(".list").toggle();
+       $(".list1").toggle();
+   });
+   $(".graph").click(function(){
+       $(".list2").toggle();
    });
 });

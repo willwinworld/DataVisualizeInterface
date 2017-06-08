@@ -34,7 +34,7 @@
         </li>
         <li>
             <a class="city">城市</a>
-            <ul class="list" style="list-style-type:none;">
+            <ul class="list1" style="list-style-type:none;">
                 {% for dir in dirs %}
                     <li>
                         <a href="{{ url_for('city', cityname=dir.decode('gbk', 'ignore')) }}">{{ dir.decode('gbk', 'ignore') }}</a>
@@ -43,7 +43,15 @@
             </ul>
         </li>
         <li>
-            <a href="{{ url_for('chart') }}">图表</a>
+            <a class="graph">图表</a>
+            <ul class="list2" style="list-style-type:none;">
+                <li>
+                    <a href="{{ url_for('chart') }}">图表一</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('table') }}">图表二</a>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

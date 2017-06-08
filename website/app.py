@@ -79,12 +79,19 @@ def data_from_database():  # 查询数据库，返回列表
     for obj in rq_response:
         items.append({'index': count, 'date': obj.created_time.strftime("%Y-%m-%d"), 'number': obj.count})
         count += 1
+    latest_date = None
+    for row in Crime.select().order_by(Crime.created_time.desc()):
+        latest_date = row.created_time.date()
+        break
+    total_num = Crime.select().where(Crime.created_time.day <= latest_date).count()
+    last_element = {'index': items[-1]['index']+1, 'date': u'总数', 'number': total_num}
+    items.append(last_element)
     return items
 
 
 @app.route('/stream_chart', methods=['POST'])
 def stream_chart():
-    data = jsonify(data_from_database())
+    data = jsonify(data_from_database()[:-1])
     """传json data到前端页面，用于ajax"""
     return data
 
@@ -96,6 +103,15 @@ def chart():
     file_names = [x.replace('.py', '') for x in os.listdir(program_path) if
                   x != 'dialogue' and x != 'log' and x != 'sd_model.py' and len(x) < 10]
     return render_template('chart.html', items=items, dirs=file_names)
+
+
+@app.route('/table', methods=['GET', 'POST'])
+def table():
+    items = data_from_database()
+    program_path = '../sd'
+    file_names = [x.replace('.py', '') for x in os.listdir(program_path) if
+                  x != 'dialogue' and x != 'log' and x != 'sd_model.py' and len(x) < 10]
+    return render_template('table.html', items=items, dirs=file_names)
 
 
 class PostDataForm(Form):

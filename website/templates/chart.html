@@ -7,11 +7,8 @@
         #chart {
             width: 50%;
             margin: auto;
-        }
-        #table {
-            width: 50%;
-            margin: auto;
-            float: right;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
         }
     </style>
     <div id="chart" style="width: 600px;height:400px;"></div>
@@ -57,22 +54,4 @@
         });
         myChart.setOption(option);
     </script>
-    <table class="table table-hover" id="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>日期</th>
-                <th>数量</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for item in items %}
-            <tr>
-                <th scope="row">{{ item.index }}</th>
-                <td>{{ item.date }}</td>
-                <td>{{ item.number }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}
