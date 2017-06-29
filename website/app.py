@@ -21,7 +21,8 @@ bootstrap = Bootstrap(app)
 def stream_province():
     def generate():
         log_path = '../sd/log'
-        with open('%s/山东省人民检察院.log' % log_path, 'r') as f:
+        # with open('%s/山东省人民检察院.log' % log_path, 'r') as f:
+        with open('%s/test.log' % log_path, 'r') as f:
             yield f.read()
 
     return Response(generate(), mimetype='text/plain')
