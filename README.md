@@ -5,8 +5,11 @@
 
 --Finished ajax轮询后端日志显示
 <br>
---TODO 完成websocket动态刷新echarts折线图
-
+--Finished echarts图表展示
+<br>
+--Finished 完成websocket持久连接显示日志文件
+<br>
+![image](https://github.com/willwinworld/DataVisualizeInterface/blob/master/images/logwatcher.png)
 
 
 
