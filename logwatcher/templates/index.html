@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='jquery.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function ()
+        {
+            namespace = '/test';
+
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+            socket.on('connect', function ()
+            {
+                socket.emit('my_event', {data: 'I\'m connected!'})
+            });
+
+            window.setInterval(function() {
+                socket.emit('my_ping');
+            }, 1000);
+
+
+//            var logValue = '{{ log_content }}';
+//            alert(logValue);
+            console.log('aaa');
+            socket.on('my_pong', function(data) {
+                $('#textarea').text(data);
+                console.log('bbb');
+            });
+
+//            $("#submit").click(
+//                socket.on('my_pong', function(data) {
+//                $('#textarea').text(data);
+//                console.log('bbb');
+//                })
+//            );
+
+        });
+    </script>
+{% endblock %}
+
+{% block page_content %}
+<div class="page-header col-md-9">
+    <div class="jumbotron">
+        <div class="container">
+            <h2 id="log">日志</h2>
+            <textarea class="form-control" rows="20" id="textarea"></textarea>
+            <button class="btn btn-primary btn-lg" id="submit">显示日志</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
